@@ -78,7 +78,7 @@ public class Rail : MonoBehaviour {
             GameObject obj = rail[i];
             if (obj == null)
                 continue;
-            float move_width = speedd * Time.deltaTime * direction;
+            float move_width = speed * Time.deltaTime * direction;
             obj.transform.Translate(new Vector3(move_width, 0, 0));
             float spriteWidth = obj.GetComponent<SpriteRenderer>().bounds.size.x;
 
