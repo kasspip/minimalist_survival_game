@@ -1,8 +1,9 @@
-﻿<Properties StartupItem="Lost in the wild.CSharp.csproj">
+﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resources\Scripts\Rail.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resources\Scripts\Map.cs">
     <Files>
       <File FileName="Assets\Resources\Scripts\Rail.cs" Line="85" Column="88" />
+      <File FileName="Assets\Resources\Scripts\Map.cs" Line="104" Column="18" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
