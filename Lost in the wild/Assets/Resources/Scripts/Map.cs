@@ -25,11 +25,13 @@ public class Map : MonoBehaviour {
     public float pourcentageWater = 0;
     public float poucentageMountain = 0;
     public float pourcentageForest = 0;
+    public bool debug = false;
     public List<HexCell> biomeWater; 
     public List<HexCell> biomeDirt; 
     public List<HexCell> biomeMountains; 
     public List<HexCell> biomeForest;
     public GameObject man;
+    public GameObject debug_hex;
     private HexCell currentCell;
 
     //public List<Color> biomes = new List<Color>(); 
@@ -37,12 +39,18 @@ public class Map : MonoBehaviour {
     void Awake()
     {
         CreateMap();
-        SetCameraPosition();
     }
 
-    void SetCameraPosition() {
-        float middlePos = (rings/2) * (HexMetrics.outerRadius*2);
-        Camera.main.transform.position = new Vector3(middlePos, 1.84f,-10);
+    void SetStartTile(HexCell cell)
+    {
+        currentCell = cell;
+        currentCell.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+
+        man.SetActive(true);
+        man.transform.position = new Vector3(currentCell.transform.position.x, currentCell.transform.position.y + 0.7f, currentCell.transform.position.z - 0.1f);
+        man.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+
+        Camera.main.transform.Translate(currentCell.transform.position);
     }
 
     void CreateMap() {
@@ -55,13 +63,8 @@ public class Map : MonoBehaviour {
         
         //Middle layer
         HexCell cell = CreateCell(index, 0);
-        if (index == 1 + (rings / 2)) {
-            currentCell = cell;
-            currentCell.gameObject.GetComponent<SpriteRenderer>().color = Color.green;
-            man.SetActive(true);
-            man.transform.position = new Vector3(currentCell.transform.position.x, currentCell.transform.position.y + 0.7f, currentCell.transform.position.z - 0.1f);
-            man.transform.localScale = new Vector3(0.3f,0.3f,0.3f);
-        }
+        if (index == rings)
+            SetStartTile(cell);
         int counter = 0;
         int top_offset = 1;
         int bot_offset = 0;
@@ -117,6 +120,12 @@ public class Map : MonoBehaviour {
         HexCell cell = Instantiate<HexCell>( PickRandomBiome() );
         cell.transform.SetParent(transform, false);
         cell.transform.localPosition = position;
+
+        if (debug == true) {
+            GameObject hex = Instantiate<GameObject>( debug_hex );
+            hex.transform.SetParent(transform, false);
+            hex.transform.localPosition = position;
+        }
 
         return cell;
     }
