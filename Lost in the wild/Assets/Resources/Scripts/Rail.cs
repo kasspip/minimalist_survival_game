@@ -35,9 +35,15 @@ public class Rail : MonoBehaviour {
         }
     }
 
+    void Awake()
+    {
+        SubscribeToEvents();
+    }
+
     void Start()
     {
-       stageDimensions = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+
+        stageDimensions = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         float current_pos = -(stageDimensions.x + 3);
         float width = 0;
         do {
@@ -49,22 +55,11 @@ public class Rail : MonoBehaviour {
             
     }
 
-    void Update()
-    {
-        if (Input.GetAxis("Horizontal") > 0.5f)
-        {
-            Move(Direction.Left);
-        }
-        if (Input.GetAxis("Horizontal") < -0.5f)
-        {
-            Move(Direction.Right);
-        }
-    }
-
     private GameObject GenerateElementAt(float pos)
     {
         int id = Random.Range(1, elementLibray.Count);
         GameObject element = GameObject.Instantiate(elementLibray[id-1], new Vector3(pos, elementLibray[id - 1].transform.position.y, depth), Quaternion.identity) as GameObject;
+        element.transform.SetParent(gameObject.transform);
         element.GetComponent<SpriteRenderer>().color = colorShift;
         if (Random.value < 0.5f)
             element.GetComponent<SpriteRenderer>().flipX = true;
@@ -117,5 +112,25 @@ public class Rail : MonoBehaviour {
             }
         }
         return ret;
+    }
+
+    //Events & callbacks
+
+    void SubscribeToEvents()
+    {
+        EventManager.OnPressRight += this.OnPressRight;
+        EventManager.OnPressLeft += this.OnPressLeft;
+    }
+
+    void OnPressRight()
+    {
+        if (GameManager.instance.CurrentState != GameState.PAUSE)
+            Move(Direction.Left);
+    }
+
+    void OnPressLeft()
+    {
+        if (GameManager.instance.CurrentState != GameState.PAUSE)
+            Move(Direction.Right);
     }
 }

@@ -7,13 +7,15 @@ public class MouseMapMove : MonoBehaviour {
     private Vector3 Origin;
     private Vector3 Diference;
     private bool Drag = false;
+
     void Start()
     {
         ResetCamera = Camera.main.transform.position;
     }
+
     void LateUpdate()
     {
-        if (Input.GetMouseButton(0))
+        if (GameManager.instance.CurrentState == GameState.MAP && Input.GetMouseButton(0))
         {
             Diference = (Camera.main.ScreenToWorldPoint(Input.mousePosition)) - Camera.main.transform.position;
             if (Drag == false)
@@ -29,11 +31,6 @@ public class MouseMapMove : MonoBehaviour {
         if (Drag == true)
         {
             Camera.main.transform.position = Origin - Diference;
-        }
-        //RESET CAMERA TO STARTING POSITION WITH RIGHT CLICK
-        if (Input.GetMouseButton(1))
-        {
-            Camera.main.transform.position = ResetCamera;
         }
     }
 }
